@@ -1,0 +1,418 @@
+//<![CDATA[
+     if (s) {
+           s.t()
+     }
+     //]]>
+
+
+
+
+
+
+
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-63MW');
+
+ 
+		
+			
+
+
+
+	
+		     
+		
+			
+
+
+Home   |   Careers   |   Contact AIA   |   CSR   |   Feedback
+
+
+
+
+
+
+				
+					link to AIA.com
+				
+			
+			
+				Individuals  
+		
+				
+			
+				
+
+
+
+Product & Services | Life
+
+AIA PensionsAIA Pensions PlusAIA Savings PlanAIA Savings PlusAIA Investment PlanAIA Fund Builder PlusAIA Health Insurance
+
+Product & Services | General
+
+AIA Motor InsuranceAIA Home ProtectAIA Home Insurance PlanAIA Title InsuranceAIA eTravel
+
+Contact Us
+
+
+
+
+
+
+				
+			
+	Business  
+		
+				
+			
+				
+				For Employees
+
+Group LifeSurgical and HospitalisationWorkmen’s Compensation
+
+Asset Protection
+
+Engineering ClassFire ClassMiscellaneous ClassMarine Class
+
+
+
+
+
+
+
+
+
+
+Protection from Liabilities
+
+
+
+eMarine
+
+
+
+Risk Management
+
+
+
+
+				
+										
+	About AIA  
+		
+				
+			
+				
+				About
+
+Company ProfileWho We AreCorporate FactsFinancial InformationOur NetworkAccoladesHall of Fame
+
+
+
+
+
+
+
+  CSR
+Corporate Social ResponsibilitySafetyEducationOther
+
+
+
+
+
+
+
+Careers
+
+
+
+Feedback
+
+
+
+
+
+ 
+				
+			
+	Customer Care   
+		
+				
+			
+				
+				
+
+
+FAQ
+
+
+
+
+
+Claim Intimation - 
+
+Individual
+
+Motor ClaimDeath ClaimOther Claims
+
+
+
+
+
+
+
+
+
+Claim Intimation - 
+
+Corporate
+Surgical and Hospitalization ClaimWorkmen’s Compensation / Personal
+Accident Claim
+Marine 
+
+ClaimsProperty 
+
+ClaimOther 
+
+Claims
+				
+			
+										
+	
+     
+	
+	My AIA (Login)
+	
+	
+		   > eInsurance   > eMarine
+	
+  
+
+
+Call +94 11 2310310
+
+			
+		
+	
+    
+    
+    
+    
+	
+		
+	Sri Lanka
+
+    
+ 
+
+
+			
+			
+				
+					
+	Home  >  Individual  >  Product & Services | Life  >  AIA Pensions
+  
+		
+			document.write(jlib.getLocalName('PrintName'));
+		
+	
+
+					
+					  
+						
+							AIA Pensions        
+							
+	
+		   
+	
+	
+		Approximately 5% of people live comfortably after retirement. Most of us do not fall into that category because we fail to plan. Now AIA provides you the opportunity to be within that 5% by introducing a pension for everyone in Sri Lanka. All you are required to do is to decide when to retire, how much you will need as a monthly pension and for how long you will need that pension.
+	
+        
+	A monthly pension for you
+
+You will start receiving a monthly pension commencing from your chosen Retirement Age. You have the option of choosing a pension receiving period between 10 - 30 years. Even if you are unable to pay your premium (during the premium paying term) due to a Total Permanent Disability, the Company will pay the premium on your behalf ensuring continuous build-up of your Pension fund, assuring you a monthly pension from the Retirement Age.
+
+A pension for your spouse, if you are not there
+
+In the unforeseen event of your death AIA will continue your policy by paying the premium on your behalf, ensuring that your spouse or dependents receive a monthly pension until the end of the opted pension receiving period.
+
+Investment choices to build your fund
+
+You have a choice of four investment strategies, namely Cautious, Moderate, Aggressive and Advanced which allow you to invest your Pension Fund in investment options ranging from Treasury Bills to the Stock Market.
+
+A safeguard against inflation
+
+An in-built inflation guard protects your Pension Fund against inflation even in the unforeseen event of your death or Total Permanent Disability.
+
+A Life Cover that suits you 
+
+AIA Pensions offers you a life cover that is twice your initial annual basic premium. In addition by paying a nominal amount you have the option of increasing your life cover if required.
+
+Ability to withdraw funds in an emergency
+
+After the completion of three policy years, you have the option to withdraw up to 15% of the Pension Fund as an emergency withdrawal, once during the premium paying term. In addition to the emergency withdrawal, upon reaching the retirement age you will have the option of making a withdrawal of up to 100% of your Pension Fund.
+ 
+
+
+If you make a withdrawal of 100% of your Pension Fund, your policy will cease and you will not receive a monthly pension. However, if you withdraw only a part of your Pension fund, your monthly Pension will depend on the balance of your Pension Fund and the opted Pension receiving period.
+
+Performance of our Funds
+Unit Price growth* 
+
+
+
+Fund20072008200920102011Secure10%9%21%14%6%Balanced7%-5%48%46%-4%Growth1%-21%84%86%-12%
+
+*Please note that past performance is not an indication of future returns
+
+Note: The savings/retirement benefits are subject to investment risk (in view of the fluctuations in the market prices of the underlying assets) which are borne by the policyholder
+
+* Terms & Conditions apply
+
+
+
+
+
+						
+					  
+							
+	
+
+
+AIA Brochures
+
+
+  > AIA Pensions  
+
+  
+
+
+
+        
+
+					
+				
+				
+
+
+
+Product & Services | LifeAIA PensionsAIA Pensions PlusAIA Savings PlanAIA Savings PlusAIA Investment PlanAIA Fund Builder PlusAIA Health Insurance  
+
+
+
+			
+			
+
+
+
+
+	
+	
+
+Individuals
+
+Product & Services | Life
+
+AIA PensionsAIA Pensions PlusAIA Savings PlanAIA Savings PlusAIA Investment PlanAIA Fund Builder PlusAIA Health Insurance
+
+Product & Services | General
+
+AIA Motor InsuranceAIA Home ProtectAIA Home Insurance PlanAIA Title InsuranceAIA eTravel
+
+Contact Us
+
+
+
+
+Business
+
+For Employees
+
+Group LifeSurgical and HospitalisationWorkmen's Compensation
+
+Asset Protection
+Engineering ClassFire ClassMiscellaneous ClassMarine Class
+
+
+
+
+
+
+Protection from Liabilities
+eMarine
+Risk Management
+
+
+
+
+
+
+
+
+About AIA
+
+About
+Company ProfileWho We AreCorporate FactsFinancial InformationOur NetworkAccoladesHall of Fame
+
+
+
+CSR
+Corporate Social ResponsibilitySafetyEducationOther
+
+
+Careers
+Feedback
+
+
+
+
+
+
+
+
+Customer Care
+
+FAQ
+
+
+
+
+Claim Intimation - 
+
+Individual
+
+
+Motor ClaimDeath ClaimOther ClaimsClaim Intimation - 
+
+Corpo	rate
+
+Surgical and Hospitalization ClaimWorkmen's Compensation / Personal
+Accident ClaimMarine 
+
+ClaimsProperty 
+
+ClaimOther 
+
+Claims
+
+
+
+
+
+
+
+	
+
+
+Copyright © 2013, AIA Group Limited and its subsidiaries. All rights reserved.   "Terms of Use".
+
+
+
+
+
+ 
