@@ -39,7 +39,7 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
     private enum Element {
 
-        A, AREA, LINK, IFRAME, FRAME, EMBED, IMG, BASE, META, BODY, P, SPAN,HTML,FONT
+        A, AREA, LINK, IFRAME, FRAME, EMBED, IMG, BASE, META, BODY, P, SPAN, HTML, FONT, BR
     }
 
     private static class HtmlFactory {
@@ -62,27 +62,22 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
     private String metaLocation;
     private boolean isWithinBodyElement;
     private StringBuilder bodyText;
-    
     private StringBuilder databaseAuthor;
     private StringBuilder databaseDate;
-            private StringBuilder databaseTopic;
-                    private StringBuilder databaseContent;
-    
-    
-  
+    private StringBuilder databaseTopic;
+    private StringBuilder databaseContent;
     private boolean anchorFlag = false;
     private StringBuilder anchorText = new StringBuilder();
     private boolean isEntryStarted;
     private boolean isParagraphStarted;
+    private boolean isParagraphDiscovered;
     private boolean isDateAndAuthorDiscovered;
+    private boolean isWithinAuthor;
     private boolean isTopicDiscovered;
     private boolean isWithinElement;
     private boolean isDatabasesendOK;
-    
-     private int count=0;
-    private boolean localTopicDiscovered=false;
-    
-     
+    private boolean startCounting;
+    private int brCount;
 
     public HtmlContentHandlerDivaina() {
         isEntryStarted = false;
@@ -91,23 +86,25 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
         isDateAndAuthorDiscovered = false;
         isTopicDiscovered = false;
         isWithinElement = false;
-        isDatabasesendOK=false;
-
+        isDatabasesendOK = false;
+        startCounting = false;
+        isWithinAuthor = false;
+        isParagraphDiscovered = false;
         bodyText = new StringBuilder();
-        databaseAuthor= new StringBuilder();
-        databaseContent= new StringBuilder();
-        databaseDate= new StringBuilder();
-        databaseTopic= new StringBuilder();
-        
-        
+        databaseAuthor = new StringBuilder();
+        databaseContent = new StringBuilder();
+        databaseDate = new StringBuilder();
+        databaseTopic = new StringBuilder();
+
+
     }
 
     @Override
-   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         Element element = HtmlFactory.getElement(localName);
         // modified by adeesha. 
 
-
+        //System.out.println("Start Element");
 
 
         if (element == Element.META) {
@@ -124,113 +121,60 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
             }
         }
+        isDatabasesendOK = true;
 
-        //Raise the body element flag
-        if (element == Element.BODY) {
-            isWithinBodyElement = true;
-        }
 
-        //Scroll down until we meet the Span with the class attribute set to "entry-content" and raise the entry flag.
-        if (element == Element.SPAN) {
-            String spanStyle = attributes.getValue("class");
-            if (spanStyle != null) {
-                if (spanStyle.equalsIgnoreCase("entry-content")) {
-                    isEntryStarted = true;
-                }
-            }
-            return;
-        }
 
-        if (isEntryStarted) {
-            if (element == Element.P) {
-                isParagraphStarted = true;
-                isWithinElement = true;
-                // String pClass = attributes.getValue("");
-                // System.out.println("sff");
-            }
 
-        }
-        //Discover meta data and raise the appropriate flags
+        /*if (isEntryStarted) {
+         if (element == Element.P) {
+         isParagraphStarted = true;
+         isWithinElement = true;
+         // String pClass = attributes.getValue("");
+         // System.out.println("sff");
+         }
+
+         }
+         if (isEntryStarted && isParagraphStarted) {
+         if (element != Element.P) {
+         isParagraphStarted = false;
+         isEntryStarted = false;
+         // String pClass = attributes.getValue("");
+         // System.out.println("sff");
+         }
+
+         }*/
+
+
+        //System.out.println("Element ="+ element);
+
         if (element == Element.FONT) {
 
             String tagName = attributes.getQName(0);
             String size = attributes.getValue("size");
             String color = attributes.getValue("color");
 
-            System.out.println("Name = " + tagName + " " + size + " " + color);
-
-            if (tagName != null && size != null && color != null) {
-                if (size.equals("5") && (color.equals("#336600") || color.equals("#000066"))) {
+            //System.out.println("Name = " + tagName + " " + size + " " + color);
+            if (size != null && color != null) {
+                //System.out.println("Name = " + tagName + " " + size + " " + color);
+                if ((size.equals("4") && color.equals("#003300")) || (size.equals("5") && color.equals("#003300"))) {
                     isTopicDiscovered = true;
                     isWithinElement = true;
-                    localTopicDiscovered = true;
-                }
-
-            } else if (tagName != null && size != null && localTopicDiscovered) {
-                isDateAndAuthorDiscovered = true;
-                isWithinElement = true;
-            }
-            count++;
-            return;
-        }
-
-        if (isEntryStarted && isParagraphStarted) {
-            if (element != Element.P) {
-                isParagraphStarted = false;
-                isEntryStarted = false;
-                // String pClass = attributes.getValue("");
-                // System.out.println("sff");
-            }
-
-        }
-
-
-        if (element == Element.SPAN) {
-
-
-
-            String spanStyle = attributes.getValue("class");
-            if (spanStyle != null) {
-                if (spanStyle.equalsIgnoreCase("entry-content")) {
-
-                    isEntryStarted = true;
-
+                    //localTopicDiscovered = true;
                 }
             }
+
+            if (size != null && color == null) {
+                if (size.equals("4")) {
+                    brCount = 0;
+                    startCounting = true;
+                    isWithinAuthor = true;
+                }
+            }
+
 
             return;
         }
-
-
-        if (element == Element.P) {
-
-            //  isParagraphstarting=true;
-
-            String style = attributes.getValue("style");
-
-            if (style != null) {
-                if (style.contains("font-size:12px; color:#c28282;")) {
-                    isDateAndAuthorDiscovered = true;
-                    isWithinElement = true;
-                }
-                if (style.contains("font-size:26px;")) {
-                    isTopicDiscovered = true;
-                    isWithinElement = true;
-                }
-
-
-            }
-//                        String pClass = attributes.getValue("class");
-//                        if (pClass != null) {
-//                                if(pClass.equalsIgnoreCase("leftbar_news_heading")){
-//
-//                                isLeftbarNewsHeading=true;
-//
-//                            }
-//                        }
-            return;
-        }
-
 
 
         /// end of modification
@@ -243,23 +187,13 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
             String href = attributes.getValue("href");
             if (href != null) {
+                anchorFlag = true;
+
             }
             return;
         }
 
-        if (element == Element.IMG) {
-            String imgSrc = attributes.getValue("src");
-            if (imgSrc != null) {
-            }
-            return;
-        }
 
-        if (element == Element.IFRAME || element == Element.FRAME || element == Element.EMBED) {
-            String src = attributes.getValue("src");
-            if (src != null) {
-            }
-            return;
-        }
 
         if (element == Element.BASE) {
             if (base != null) { // We only consider the first occurrence of the
@@ -272,9 +206,33 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             return;
         }
 
-        if (element == Element.BODY) {
-            isWithinBodyElement = true;
+        if (element == Element.META) {
+            String equiv = attributes.getValue("http-equiv");
+            String content = attributes.getValue("content");
+            if (equiv != null && content != null) {
+                equiv = equiv.toLowerCase();
+
+                // http-equiv="refresh" content="0;URL=http://foo.bar/..."
+                if (equiv.equals("refresh") && (metaRefresh == null)) {
+                    int pos = content.toLowerCase().indexOf("url=");
+                    if (pos != -1) {
+                        metaRefresh = content.substring(pos + 4);
+                    }
+
+                }
+
+                // http-equiv="location" content="http://foo.bar/..."
+                if (equiv.equals("location") && (metaLocation == null)) {
+                    metaLocation = content;
+
+                }
+            }
+            return;
         }
+
+        /*if (element == Element.BODY) {
+         isWithinBodyElement = true;
+         }*/
 
     }
 
@@ -282,41 +240,73 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         Element element = HtmlFactory.getElement(localName);
 
+        if (element == Element.P) {
+            isParagraphStarted = false;
+        }
+
+        if (element == Element.BR) {
+            if (startCounting) {
+                //System.out.println("BR");
+                brCount++;
+
+                if ((brCount == 2 || brCount == 3) && isWithinAuthor) {
+                    isWithinAuthor = false;
+                    isDateAndAuthorDiscovered = true;
+                    isParagraphStarted = true;
+                }
+            }
+        }
+
+        /* if(element == Element.FONT && isParagraphStarted && brCount >3){
+         isParagraphStarted = false;
+         isParagraphDiscovered = true;
+         }*/
+
+
+        //System.out.println("End Element");
         if (isWithinElement) {
             isWithinElement = false;
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
-               writer.newLine();
+                writer.newLine();
                 writer.flush();
                 writer.close();
 
             } catch (IOException ex) {
-                Logger.getLogger(HtmlContentHandlerDivaina.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        if (element == Element.A || element == Element.AREA || element == Element.LINK) {
-            anchorFlag = false;
-            
-        }
+        /*if (element == Element.A || element == Element.AREA || element == Element.LINK) {
+         anchorFlag = false;
+
+         }(*/
         // comment for commit 2013.04.26
         if (element == Element.BODY) {
             isWithinBodyElement = false;
-            if(isDatabasesendOK){
-                String toDatabe[]= new String[4];
-                toDatabe[0]=databaseAuthor.toString();
-                toDatabe[1]=databaseDate.toString();
-                  toDatabe[2]=databaseTopic.toString();
-                    toDatabe[3]= databaseContent.toString();
-                
-            SQLCommunicator.InsertInToTable("divaina",toDatabe);   
-           // SQLCommunicator.communicate(databaseAuthor.toString(), databaseDate.toString(), databaseTopic.toString(), databaseContent.toString());
+            if (isDatabasesendOK) {
+                databaseContent = databaseContent.replace(0, databaseAuthor.length() + 1, "");
+                String toDatabe[] = new String[4];
+                toDatabe[0] = databaseAuthor.toString().replaceAll("\\s+", " ");
+                toDatabe[1] = databaseDate.toString().replaceAll("\\s+", " ");
+                toDatabe[2] = databaseTopic.toString().replaceAll("\\s+", " ");
+                toDatabe[3] = databaseContent.toString().replaceAll("\\s+", " ");
+
+                if (!(toDatabe[0].equals(" ") && !toDatabe[2].equals(" ") && !toDatabe[3].equals(" ")) && !(toDatabe[0].length()==0 && toDatabe[2].length()==0 && toDatabe[3].length()==0)) {
+                    System.out.println("Author =" + toDatabe[0]);
+                    System.out.println("Date =" + toDatabe[1]);
+                    System.out.println("Topic =" + toDatabe[2]);
+                    System.out.println("Contet =" + toDatabe[3]);
+                    //SQLCommunicator.InsertInToTable("lankadeepa", toDatabe);
+                }
+
+
             }
-            }
-      
+        }
+
     }
-    
+
     @Override
     public void characters(char ch[], int start, int length) throws SAXException {
         // modified by Adeesha	
@@ -327,6 +317,9 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             BufferedWriter writer = null;
             try {
                 databaseTopic.append(ch, start, length);
+                char[] space = new char[1];
+                space[0] = ' ';
+                databaseTopic.append(space, 0, 1);
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
                 writer.write("Topic   : ");
                 writer.write(new String(ch, start, length));
@@ -335,66 +328,76 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
                 writer.close();
 
             } catch (IOException ex) {
-                Logger.getLogger(HtmlContentHandlerDivaina.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
             }
+            //System.out.println("Topic   : " + databaseTopic);
         }
         if (isDateAndAuthorDiscovered) {
             isDateAndAuthorDiscovered = false;
-            
-            String tempauthoranddate = new String(ch);
-               String[] tempauthoranddatearray = tempauthoranddate.split("\\|");
-            
-            databaseDate.append(tempauthoranddatearray[0], start, tempauthoranddatearray[0].length());
-            databaseAuthor.append(tempauthoranddatearray[1], start, length-tempauthoranddatearray[0].length());
+
+            //String tempauthoranddate = new String(ch);
+            //System.out.println(new String(ch, start, length));
+            databaseAuthor.append(new String(ch, start, length));
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
-                writer.write("Date and Author   : ");
+                writer.write("Author   : ");
                 writer.write(new String(ch, start, length));
 
                 writer.flush();
                 writer.close();
 
             } catch (IOException ex) {
-                Logger.getLogger(HtmlContentHandlerDivaina.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
             }
+            //System.out.println("Date and Author   : " + databaseAuthor);
+
         }
 
         if (isParagraphStarted) {
-            databaseContent.append(ch, start, length);
+            isParagraphDiscovered = false;
+            //String tempauthoranddate = new String(ch);
+            //System.out.print(new String(ch, start, length));
+            databaseContent.append(new String(ch, start, length));
+
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
 
                 writer.write(new String(ch, start, length));
-               
+
                 writer.flush();
                 writer.close();
 
             } catch (IOException ex) {
-                Logger.getLogger(HtmlContentHandlerDivaina.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            //System.out.println("Content   : " + databaseContent);
             //isParagraphStarted=false;
         }
 
         // end of modification
 
 
-        if (isWithinBodyElement) {
-            bodyText.append(ch, start, length);
+        /*if (isWithinBodyElement) {
+         bodyText.append(ch, start, length);
 
-            if (anchorFlag) {
-                anchorText.append(new String(ch, start, length));
-            }
-        }
+         if (anchorFlag) {
+         anchorText.append(new String(ch, start, length));
+         }
+         }*/
     }
+
     @Override
     public String getBodyText() {
         return bodyText.toString();
     }
-    
-      @Override
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getBaseUrl() {
         return base;
     }

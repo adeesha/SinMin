@@ -213,12 +213,12 @@ public class WebCrawler implements Runnable {
             String month = null;
             String date = null;
             String news = null;
-            for (int i = 2010; i < 2014; i++) {
+            for (int i = 2012; i < 2014; i++) {
 
                 for (int j = 1; j < 13; j++) {
 
                     for (int k = 1; k < 32; k++) {
-                        for (int p = 1; p < 30; p++) {
+                        for (int p = 1; p < 15; p++) {
                             if (j < 10) {
                                 month = "0" + j;
 
@@ -229,6 +229,8 @@ public class WebCrawler implements Runnable {
                             if (p < 10) {
                                 news = "0" + p;
 
+                            }else{
+                                news = ""+p;
                             }
                             year = "" + i;
 
