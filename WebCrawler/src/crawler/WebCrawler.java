@@ -213,7 +213,7 @@ public class WebCrawler implements Runnable {
             String month = null;
             String date = null;
             String news = null;
-            for (int i = 2012; i < 2014; i++) {
+            for (int i = 2012; i < 2013; i++) {
 
                 for (int j = 1; j < 13; j++) {
 
@@ -238,7 +238,7 @@ public class WebCrawler implements Runnable {
 
 
                             System.out.println("**********Crawling**********" + pageURL);
-                            processPage(pageURL, year, month, date,null);
+                            processPage(pageURL, year, month, date,pageURL);
 
                         }
                     }

@@ -78,8 +78,17 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
     private boolean isDatabasesendOK;
     private boolean startCounting;
     private int brCount;
+    String year = null;
+    String month = null;
+    String date = null;
+    String url = null;
 
-    public HtmlContentHandlerDivaina() {
+    public HtmlContentHandlerDivaina(String year, String month, String date, String url) {
+        this.year = year;
+        this.month = month;
+        this.date = date;
+        this.url = url;
+
         isEntryStarted = false;
         isWithinBodyElement = false;
         isParagraphStarted = false;
@@ -95,6 +104,7 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
         databaseContent = new StringBuilder();
         databaseDate = new StringBuilder();
         databaseTopic = new StringBuilder();
+
 
 
     }
@@ -126,24 +136,18 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
 
 
-        /*if (isEntryStarted) {
-         if (element == Element.P) {
-         isParagraphStarted = true;
-         isWithinElement = true;
-         // String pClass = attributes.getValue("");
-         // System.out.println("sff");
-         }
-
-         }
-         if (isEntryStarted && isParagraphStarted) {
-         if (element != Element.P) {
-         isParagraphStarted = false;
-         isEntryStarted = false;
-         // String pClass = attributes.getValue("");
-         // System.out.println("sff");
-         }
-
-         }*/
+        /*
+         * if (isEntryStarted) { if (element == Element.P) { isParagraphStarted
+         * = true; isWithinElement = true; // String pClass =
+         * attributes.getValue(""); // System.out.println("sff"); }
+         *
+         * }
+         * if (isEntryStarted && isParagraphStarted) { if (element != Element.P)
+         * { isParagraphStarted = false; isEntryStarted = false; // String
+         * pClass = attributes.getValue(""); // System.out.println("sff"); }
+         *
+         * }
+         */
 
 
         //System.out.println("Element ="+ element);
@@ -157,7 +161,7 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             //System.out.println("Name = " + tagName + " " + size + " " + color);
             if (size != null && color != null) {
                 //System.out.println("Name = " + tagName + " " + size + " " + color);
-                if ((size.equals("4") && color.equals("#003300")) || (size.equals("5") && color.equals("#003300"))) {
+                if ((size.equals("4") && color.equals("#003300")) || (size.equals("5") && color.equals("#003300")) || color.equals("#003300")) {
                     isTopicDiscovered = true;
                     isWithinElement = true;
                     //localTopicDiscovered = true;
@@ -230,9 +234,9 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             return;
         }
 
-        /*if (element == Element.BODY) {
-         isWithinBodyElement = true;
-         }*/
+        /*
+         * if (element == Element.BODY) { isWithinBodyElement = true; }
+         */
 
     }
 
@@ -257,10 +261,10 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             }
         }
 
-        /* if(element == Element.FONT && isParagraphStarted && brCount >3){
-         isParagraphStarted = false;
-         isParagraphDiscovered = true;
-         }*/
+        /*
+         * if(element == Element.FONT && isParagraphStarted && brCount >3){
+         * isParagraphStarted = false; isParagraphDiscovered = true; }
+         */
 
 
         //System.out.println("End Element");
@@ -278,10 +282,12 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
             }
         }
 
-        /*if (element == Element.A || element == Element.AREA || element == Element.LINK) {
-         anchorFlag = false;
-
-         }(*/
+        /*
+         * if (element == Element.A || element == Element.AREA || element ==
+         * Element.LINK) { anchorFlag = false;
+         *
+         * }(
+         */
         // comment for commit 2013.04.26
         if (element == Element.BODY) {
             isWithinBodyElement = false;
@@ -289,16 +295,55 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
                 databaseContent = databaseContent.replace(0, databaseAuthor.length() + 1, "");
                 String toDatabe[] = new String[4];
                 toDatabe[0] = databaseAuthor.toString().replaceAll("\\s+", " ");
-                toDatabe[1] = databaseDate.toString().replaceAll("\\s+", " ");
+                toDatabe[1] = this.date + "/" + this.month + "/" + this.year;
                 toDatabe[2] = databaseTopic.toString().replaceAll("\\s+", " ");
                 toDatabe[3] = databaseContent.toString().replaceAll("\\s+", " ");
 
-                if (!(toDatabe[0].equals(" ") && !toDatabe[2].equals(" ") && !toDatabe[3].equals(" ")) && !(toDatabe[0].length()==0 && toDatabe[2].length()==0 && toDatabe[3].length()==0)) {
+                // Error Handling Part
+
+                if (toDatabe[0].length() > 30) {
+                    toDatabe[3] = toDatabe[0] + " " + toDatabe[3];
+                    toDatabe[0] = " ";
+                }
+                ///
+
+
+                if (!(toDatabe[3] == null || toDatabe[3].isEmpty() || toDatabe[3].equals(" "))) {
                     System.out.println("Author =" + toDatabe[0]);
                     System.out.println("Date =" + toDatabe[1]);
                     System.out.println("Topic =" + toDatabe[2]);
                     System.out.println("Contet =" + toDatabe[3]);
                     //SQLCommunicator.InsertInToTable("lankadeepa", toDatabe);
+
+
+                    BufferedWriter writer = null;
+                    try {
+                        writer = new BufferedWriter(new FileWriter("./Divaina.xml", true));
+                        writer.write("<post>\n");
+                        writer.write("<link>");
+                        writer.write(this.url);
+                        writer.write("</link>\n");
+                        writer.write("<date>");
+                        writer.write("<topic>");
+                        writer.write(toDatabe[2]);
+                        writer.write("</topic>\n");
+                        writer.write("<date>");
+                        writer.write(toDatabe[1]);
+                        writer.write("</date>\n");
+                        writer.write("<author>");
+                        writer.write(toDatabe[0]);
+                        writer.write("</author>\n");
+                        writer.write("<content>");
+                        writer.write(toDatabe[3]);
+                        writer.write("</content>\n");
+                        writer.write("</post>\n");
+
+                        writer.flush();
+                        writer.close();
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
 
@@ -379,13 +424,12 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
         // end of modification
 
 
-        /*if (isWithinBodyElement) {
-         bodyText.append(ch, start, length);
-
-         if (anchorFlag) {
-         anchorText.append(new String(ch, start, length));
-         }
-         }*/
+        /*
+         * if (isWithinBodyElement) { bodyText.append(ch, start, length);
+         *
+         * if (anchorFlag) { anchorText.append(new String(ch, start, length)); }
+         * }
+         */
     }
 
     @Override

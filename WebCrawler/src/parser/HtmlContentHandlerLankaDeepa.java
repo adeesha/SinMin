@@ -39,7 +39,7 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
 
     private enum Element {
 
-        A, AREA, LINK, IFRAME, FRAME, EMBED, IMG, BASE, META, BODY, P, SPAN,HTML
+        A, AREA, LINK, IFRAME, FRAME, EMBED, IMG, BASE, META, BODY, P, SPAN, HTML
     }
 
     private static class HtmlFactory {
@@ -62,14 +62,10 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
     private String metaLocation;
     private boolean isWithinBodyElement;
     private StringBuilder bodyText;
-    
     private StringBuilder databaseAuthor;
     private StringBuilder databaseDate;
-            private StringBuilder databaseTopic;
-                    private StringBuilder databaseContent;
-    
-    
-   
+    private StringBuilder databaseTopic;
+    private StringBuilder databaseContent;
     private boolean anchorFlag = false;
     private StringBuilder anchorText = new StringBuilder();
     private boolean isEntryStarted;
@@ -86,15 +82,15 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         isDateAndAuthorDiscovered = false;
         isTopicDiscovered = false;
         isWithinElement = false;
-        isDatabasesendOK=false;
+        isDatabasesendOK = false;
 
         bodyText = new StringBuilder();
-        databaseAuthor= new StringBuilder();
-        databaseContent= new StringBuilder();
-        databaseDate= new StringBuilder();
-        databaseTopic= new StringBuilder();
-      
-        
+        databaseAuthor = new StringBuilder();
+        databaseContent = new StringBuilder();
+        databaseDate = new StringBuilder();
+        databaseTopic = new StringBuilder();
+
+
     }
 
     @Override
@@ -102,66 +98,66 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         Element element = HtmlFactory.getElement(localName);
         // modified by adeesha. 
 
-    
-            
-            
-             if (element == Element.META) {
-           String name = attributes.getValue("name");
+
+
+
+        if (element == Element.META) {
+            String name = attributes.getValue("name");
             String content = attributes.getValue("content");
-            
-            if("description".equals(name)&&"".equals(content)){
+
+            if ("description".equals(name) && "".equals(content)) {
                 System.out.println("not a valid URL");
                 return;
             }
-            if("description".equals(name)&&!"".equals(content)){
+            if ("description".equals(name) && !"".equals(content)) {
                 System.out.println("valid URL");
-                isDatabasesendOK=true;
-               
+                isDatabasesendOK = true;
+
             }
-            
-           
+
+
         }
-            
-            
-            
-            
 
-            if (isEntryStarted) {
-                if (element == Element.P) {
-                    isParagraphStarted = true;
-                    isWithinElement = true;
-                    // String pClass = attributes.getValue("");
-                    // System.out.println("sff");
-                }
 
-            }
-            if (isEntryStarted && isParagraphStarted) {
-                if (element != Element.P) {
-                    isParagraphStarted = false;
-                    isEntryStarted = false;
-                    // String pClass = attributes.getValue("");
-                    // System.out.println("sff");
-                }
 
+
+
+        if (isEntryStarted) {
+            if (element == Element.P) {
+                isParagraphStarted = true;
+                isWithinElement = true;
+                // String pClass = attributes.getValue("");
+                // System.out.println("sff");
             }
 
-
-            if (element == Element.SPAN) {
-
-
-
-                String spanStyle = attributes.getValue("class");
-                if (spanStyle != null) {
-                    if (spanStyle.equalsIgnoreCase("entry-content")) {
-
-                        isEntryStarted = true;
-
-                    }
-                }
-
-                return;
+        }
+        if (isEntryStarted && isParagraphStarted) {
+            if (element != Element.P) {
+                isParagraphStarted = false;
+                isEntryStarted = false;
+                // String pClass = attributes.getValue("");
+                // System.out.println("sff");
             }
-     
+
+        }
+
+
+        if (element == Element.SPAN) {
+
+
+
+            String spanStyle = attributes.getValue("class");
+            if (spanStyle != null) {
+                if (spanStyle.equalsIgnoreCase("entry-content")) {
+
+                    isEntryStarted = true;
+
+                }
+            }
+
+            return;
+        }
+
 
         if (element == Element.P) {
 
@@ -204,7 +200,7 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
             String href = attributes.getValue("href");
             if (href != null) {
                 anchorFlag = true;
-               
+
             }
             return;
         }
@@ -212,7 +208,6 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         if (element == Element.IMG) {
             String imgSrc = attributes.getValue("src");
             if (imgSrc != null) {
-              
             }
             return;
         }
@@ -220,7 +215,6 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         if (element == Element.IFRAME || element == Element.FRAME || element == Element.EMBED) {
             String src = attributes.getValue("src");
             if (src != null) {
-              
             }
             return;
         }
@@ -248,13 +242,13 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
                     if (pos != -1) {
                         metaRefresh = content.substring(pos + 4);
                     }
-                   
+
                 }
 
                 // http-equiv="location" content="http://foo.bar/..."
                 if (equiv.equals("location") && (metaLocation == null)) {
                     metaLocation = content;
-                   
+
                 }
             }
             return;
@@ -263,7 +257,7 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         if (element == Element.BODY) {
             isWithinBodyElement = true;
         }
-        
+
     }
 
     @Override
@@ -275,7 +269,7 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
-               writer.newLine();
+                writer.newLine();
                 writer.flush();
                 writer.close();
 
@@ -286,24 +280,24 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
 
         if (element == Element.A || element == Element.AREA || element == Element.LINK) {
             anchorFlag = false;
-            
+
         }
         // comment for commit 2013.04.26
         if (element == Element.BODY) {
             isWithinBodyElement = false;
-         if(isDatabasesendOK){
-                String toDatabe[]= new String[4];
-                toDatabe[0]=databaseAuthor.toString();
-                toDatabe[1]=databaseDate.toString();
-                  toDatabe[2]=databaseTopic.toString();
-                    toDatabe[3]= databaseContent.toString();
-                
-            SQLCommunicator.InsertInToTable("lankadeepa",toDatabe);   
+            if (isDatabasesendOK) {
+                String toDatabe[] = new String[4];
+                toDatabe[0] = databaseAuthor.toString();
+                toDatabe[1] = databaseDate.toString();
+                toDatabe[2] = databaseTopic.toString();
+                toDatabe[3] = databaseContent.toString();
+
+                SQLCommunicator.InsertInToTable("lankadeepa", toDatabe);
             }
-            }
-      
+        }
+
     }
-    
+
     @Override
     public void characters(char ch[], int start, int length) throws SAXException {
         // modified by Adeesha	
@@ -327,12 +321,12 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         }
         if (isDateAndAuthorDiscovered) {
             isDateAndAuthorDiscovered = false;
-            
+
             String tempauthoranddate = new String(ch);
-               String[] tempauthoranddatearray = tempauthoranddate.split("\\|");
-            
+            String[] tempauthoranddatearray = tempauthoranddate.split("\\|");
+
             databaseDate.append(tempauthoranddatearray[0], start, tempauthoranddatearray[0].length());
-            databaseAuthor.append(tempauthoranddatearray[1], start, length-tempauthoranddatearray[0].length());
+            databaseAuthor.append(tempauthoranddatearray[1], start, length - tempauthoranddatearray[0].length());
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
@@ -354,7 +348,7 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
                 writer = new BufferedWriter(new FileWriter("./output1.txt", true));
 
                 writer.write(new String(ch, start, length));
-               
+
                 writer.flush();
                 writer.close();
 
@@ -381,7 +375,6 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
     public String getBodyText() {
         return bodyText.toString();
     }
-
 
     /**
      *

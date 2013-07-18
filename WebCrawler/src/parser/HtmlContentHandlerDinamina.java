@@ -72,27 +72,25 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
     private boolean isParagraphStarted;
     private boolean isDateAndAuthorDiscovered;
     private boolean isTopicDiscovered;
-   
     private boolean isDatabasesendOK;
-    
-    String year= null;
-    String month=null;
-    String date= null;
-    String cat=null;
+    String year = null;
+    String month = null;
+    String date = null;
+    String cat = null;
 
-    public HtmlContentHandlerDinamina(String year, String month, String date,String cat) {
-        
+    public HtmlContentHandlerDinamina(String year, String month, String date, String cat) {
+
         this.year = year;
-        this.month= month;
-        this.date= date;
-        this.cat=cat;
-        
+        this.month = month;
+        this.date = date;
+        this.cat = cat;
+
         isEntryStarted = false;
         isWithinBodyElement = false;
         isParagraphStarted = false;
         isDateAndAuthorDiscovered = false;
         isTopicDiscovered = false;
-      
+
         isDatabasesendOK = false;
 
         bodyText = new StringBuilder();
@@ -147,26 +145,24 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
         if (isEntryStarted) {
             if (element == Element.P) {
                 isParagraphStarted = true;
-                 String pclass = attributes.getValue("class");
-            if (pclass != null) {
-                 isParagraphStarted = false;
-                if (pclass.contains("byline")) {
-                   
-                    
+                String pclass = attributes.getValue("class");
+                if (pclass != null) {
+                    isParagraphStarted = false;
+                    if (pclass.contains("byline")) {
+                    }
+
+
+
                 }
-                
 
 
-            }
-                
-               
                 // String pClass = attributes.getValue("");
                 // System.out.println("sff");
             }
 
         }
         if (isEntryStarted && isParagraphStarted) {
-            if (element != Element.P && element!= Element.IMG) {
+            if (element != Element.P && element != Element.IMG) {
                 isParagraphStarted = false;
                 isEntryStarted = false;
                 // String pClass = attributes.getValue("");
@@ -176,42 +172,42 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
         }
 
 
-       
+
 
 
         if (element == Element.P) {
 
-            
+
 
             String pclass = attributes.getValue("class");
             if (pclass != null) {
                 if (pclass.contains("byline")) {
                     isDateAndAuthorDiscovered = true;
-                    
+
                 }
-                
+
 
 
             }
-                    
+
             return;
         }
 
 
 
-     
 
 
 
 
 
-       
 
-       
 
-    
 
-      
+
+
+
+
+
 
         if (element == Element.BODY) {
             isWithinBodyElement = true;
@@ -223,23 +219,22 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         Element element = HtmlFactory.getElement(localName);
 
-        
 
-      
-       
+
+
+
         if (element == Element.BODY) {
             isWithinBodyElement = false;
             if (isDatabasesendOK) {
-                String toDatabe[]= new String[4];
-                toDatabe[0]=databaseAuthor.toString();
-                toDatabe[1]=databaseDate.toString();
-                  toDatabe[2]=databaseTopic.toString();
-                    toDatabe[3]= databaseContent.toString();
-                
-            SQLCommunicator.InsertInToTable("dinamina",toDatabe);   
-               // SQLCommunicator.communicate(databaseAuthor.toString(), databaseDate.toString(), databaseTopic.toString(), databaseContent.toString());
-            }
-            else{
+                String toDatabe[] = new String[4];
+                toDatabe[0] = databaseAuthor.toString();
+                toDatabe[1] = databaseDate.toString();
+                toDatabe[2] = databaseTopic.toString();
+                toDatabe[3] = databaseContent.toString();
+
+                SQLCommunicator.InsertInToTable("dinamina", toDatabe);
+                // SQLCommunicator.communicate(databaseAuthor.toString(), databaseDate.toString(), databaseTopic.toString(), databaseContent.toString());
+            } else {
                 System.out.println("not a valid URL");
             }
         }
@@ -271,9 +266,9 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
             isDateAndAuthorDiscovered = false;
 
             String tempauthoranddate = new String(ch);
-           
 
-            databaseDate.append(year+"."+month+"."+date);
+
+            databaseDate.append(year + "." + month + "." + date);
             databaseAuthor.append(tempauthoranddate, start, length);
             BufferedWriter writer = null;
             try {
