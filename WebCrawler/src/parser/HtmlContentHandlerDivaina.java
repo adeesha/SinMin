@@ -301,7 +301,7 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
                 // Error Handling Part
 
-                if (toDatabe[0].length() > 30) {
+                if (toDatabe[0].length() > 120) {
                     toDatabe[3] = toDatabe[0] + " " + toDatabe[3];
                     toDatabe[0] = " ";
                 }
@@ -318,12 +318,11 @@ public class HtmlContentHandlerDivaina extends ContentHandler {
 
                     BufferedWriter writer = null;
                     try {
-                        writer = new BufferedWriter(new FileWriter("./Divaina.xml", true));
+                        writer = new BufferedWriter(new FileWriter("./Divaina_2012.xml", true));
                         writer.write("<post>\n");
                         writer.write("<link>");
                         writer.write(this.url);
                         writer.write("</link>\n");
-                        writer.write("<date>");
                         writer.write("<topic>");
                         writer.write(toDatabe[2]);
                         writer.write("</topic>\n");

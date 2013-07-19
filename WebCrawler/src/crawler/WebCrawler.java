@@ -222,9 +222,13 @@ public class WebCrawler implements Runnable {
                             if (j < 10) {
                                 month = "0" + j;
 
+                            }else{
+                                month =""+j;
                             }
                             if (k < 10) {
                                 date = "0" + k;
+                            }else{
+                                date =""+k;
                             }
                             if (p < 10) {
                                 news = "0" + p;
