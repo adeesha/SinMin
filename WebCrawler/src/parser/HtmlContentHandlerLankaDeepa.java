@@ -74,8 +74,14 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
     private boolean isTopicDiscovered;
     private boolean isWithinElement;
     private boolean isDatabasesendOK;
+    String url = null;
 
-    public HtmlContentHandlerLankaDeepa() {
+    public HtmlContentHandlerLankaDeepa(String url) {
+
+
+        this.url = url;
+
+
         isEntryStarted = false;
         isWithinBodyElement = false;
         isParagraphStarted = false;
@@ -285,14 +291,48 @@ public class HtmlContentHandlerLankaDeepa extends ContentHandler {
         // comment for commit 2013.04.26
         if (element == Element.BODY) {
             isWithinBodyElement = false;
-            if (isDatabasesendOK) {
-                String toDatabe[] = new String[4];
-                toDatabe[0] = databaseAuthor.toString();
-                toDatabe[1] = databaseDate.toString();
-                toDatabe[2] = databaseTopic.toString();
-                toDatabe[3] = databaseContent.toString();
+            databaseContent = databaseContent.replace(0, databaseAuthor.length() + 1, "");
+            String toDatabe[] = new String[4];
+            toDatabe[0] = databaseAuthor.toString().replaceAll("\\s+", " ");
+            toDatabe[1] = databaseDate.toString().replaceAll("\\s+", " ");
+            toDatabe[2] = databaseTopic.toString().replaceAll("\\s+", " ");
+            toDatabe[3] = databaseContent.toString().replaceAll("\\s+", " ");
 
-                SQLCommunicator.InsertInToTable("lankadeepa", toDatabe);
+            //String toDatabe[] = new String[4];
+            //toDatabe[0] = databaseAuthor.toString();
+            //toDatabe[1] = databaseDate.toString();
+            //toDatabe[2] = databaseTopic.toString();
+            //toDatabe[3] = databaseContent.toString();
+
+            if (toDatabe[3].length() > 2) {
+
+                BufferedWriter writer = null;
+                try {
+                    writer = new BufferedWriter(new FileWriter("./Lankadeepa.xml", true));
+                    writer.write("<post>\n");
+                    writer.write("<link>");
+                    writer.write(this.url);
+                    writer.write("</link>\n");
+                    writer.write("<topic>");
+                    writer.write(toDatabe[2]);
+                    writer.write("</topic>\n");
+                    writer.write("<date>");
+                    writer.write(toDatabe[1]);
+                    writer.write("</date>\n");
+                    writer.write("<author>");
+                    writer.write(toDatabe[0]);
+                    writer.write("</author>\n");
+                    writer.write("<content>");
+                    writer.write(toDatabe[3]);
+                    writer.write("</content>\n");
+                    writer.write("</post>\n");
+
+                    writer.flush();
+                    writer.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 

@@ -76,14 +76,14 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
     String year = null;
     String month = null;
     String date = null;
-    String cat = null;
+    String url = null;
 
-    public HtmlContentHandlerDinamina(String year, String month, String date, String cat) {
+    public HtmlContentHandlerDinamina(String year, String month, String date, String url) {
 
         this.year = year;
         this.month = month;
         this.date = date;
-        this.cat = cat;
+        this.url = url;
 
         isEntryStarted = false;
         isWithinBodyElement = false;
@@ -225,17 +225,41 @@ public class HtmlContentHandlerDinamina extends ContentHandler {
 
         if (element == Element.BODY) {
             isWithinBodyElement = false;
-            if (isDatabasesendOK) {
-                String toDatabe[] = new String[4];
-                toDatabe[0] = databaseAuthor.toString();
-                toDatabe[1] = databaseDate.toString();
-                toDatabe[2] = databaseTopic.toString();
-                toDatabe[3] = databaseContent.toString();
+            databaseContent = databaseContent.replace(0, databaseAuthor.length() + 1, "");
+            String toDatabe[] = new String[4];
+            toDatabe[0] = databaseAuthor.toString().replaceAll("\\s+", " ");
+            toDatabe[1] = databaseDate.toString().replaceAll("\\s+", " ");
+            toDatabe[2] = databaseTopic.toString().replaceAll("\\s+", " ");
+            toDatabe[3] = databaseContent.toString().replaceAll("\\s+", " ");
+            if (toDatabe[3].length() > 0) {
 
-                SQLCommunicator.InsertInToTable("dinamina", toDatabe);
-                // SQLCommunicator.communicate(databaseAuthor.toString(), databaseDate.toString(), databaseTopic.toString(), databaseContent.toString());
-            } else {
-                System.out.println("not a valid URL");
+                BufferedWriter writer = null;
+                try {
+                    writer = new BufferedWriter(new FileWriter("./Dinamina.xml", true));
+                    writer.write("<post>\n");
+                    writer.write("<link>");
+                    writer.write(this.url);
+                    writer.write("</link>\n");
+                    writer.write("<topic>");
+                    writer.write(toDatabe[2]);
+                    writer.write("</topic>\n");
+                    writer.write("<date>");
+                    writer.write(toDatabe[1]);
+                    writer.write("</date>\n");
+                    writer.write("<author>");
+                    writer.write(toDatabe[0]);
+                    writer.write("</author>\n");
+                    writer.write("<content>");
+                    writer.write(toDatabe[3]);
+                    writer.write("</content>\n");
+                    writer.write("</post>\n");
+
+                    writer.flush();
+                    writer.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(HtmlContentHandlerLankaDeepa.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 

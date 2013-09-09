@@ -88,13 +88,13 @@ public class Parser extends Configurable {
         ContentHandler contentHandler = null;
 
         if (BasicCrawlController.paper==paperE.LankadeepaArchives) {
-            contentHandler = new HtmlContentHandlerLankaDeepa();
+            contentHandler = new HtmlContentHandlerLankaDeepa(contextURL);
         }
         else if(BasicCrawlController.paper==paperE.DivainaArchives) {
             contentHandler = new HtmlContentHandlerDivaina(year,month,date,contextURL);
         }
         else if(BasicCrawlController.paper==paperE.DinaminaArchives) {
-            contentHandler = new HtmlContentHandlerDinamina(year, month,date,cat);
+            contentHandler = new HtmlContentHandlerDinamina(year, month,date,contextURL);
         }
 
 
